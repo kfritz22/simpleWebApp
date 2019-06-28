@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'war'
+    id "org.gretty" version "2.2.0"
+
+}
+
+group 'simpleWebApp'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'io.cucumber:cucumber-java:4.3.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
+  
+
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'com.fhlmc.nimble.simplewebapp', 'src/test/resources']
+        }
+    }
+}
+
+gretty {
+
+    integrationTestTask = 'cucumber' // name of existing gradle task
+
+}
