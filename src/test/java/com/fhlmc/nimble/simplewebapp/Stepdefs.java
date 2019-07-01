@@ -16,7 +16,7 @@ public class Stepdefs {
     public void that_I_have_loaded_the_simple_web_application() {
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         dr = new ChromeDriver();
-        dr.get("http://localhost:8080/simpleWebApp/hello.jsp");
+        dr.get("http://localhost:9500/simpleWebApp/hello.jsp");
     }
 
     @When("I view the page")
